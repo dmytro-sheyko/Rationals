@@ -123,6 +123,117 @@ namespace Rationals.Tests
             Assert.True(b <= a);
         }
 
+        [Theory]
+        [MemberData(nameof(GetDataForDOpComparisonsNaN))]
+        public void DComparisonsNaNLess(double a, double b) => Assert.False(a < b);
+
+        [Theory]
+        [MemberData(nameof(GetDataForDOpComparisonsNaN))]
+        public void DComparisonsNaNLessOrEquals(double a, double b) => Assert.False(a <= b);
+
+        [Theory]
+        [MemberData(nameof(GetDataForDOpComparisonsNaN))]
+        public void DComparisonsNaNGreater(double a, double b) => Assert.False(a > b);
+
+        [Theory]
+        [MemberData(nameof(GetDataForDOpComparisonsNaN))]
+        public void DComparisonsNaNGreaterOrEquals(double a, double b) => Assert.False(a >= b);
+
+        [Theory]
+        [MemberData(nameof(GetDataForDOpComparisonsNaN))]
+        public void DComparisonsNaNOpEquals(double a, double b) => Assert.False(a == b);
+
+        [Theory]
+        [MemberData(nameof(GetDataForDOpComparisonsNaN))]
+        public void DComparisonsNaNNotEquals(double a, double b) => Assert.True(a != b);
+
+        public static IEnumerable<object[]> GetDataForDOpComparisonsNaN()
+        {
+            double[] samples = { double.NegativeInfinity, -1d, -0d, 0d, 1d, double.PositiveInfinity, };
+            foreach (double d in samples)
+            {
+                yield return new object[] { double.NaN, d, };
+                yield return new object[] { d, double.NaN, };
+            }
+            yield return new object[] { double.NaN, double.NaN, };
+        }
+
+        [Theory]
+        [MemberData(nameof(GetDataForDEqCmpComparisonsNaN))]
+        public void DComparisonsNaNCompareTo(double a, double b, int cmp) => Assert.Equal(cmp, a.CompareTo(b));
+
+        [Theory]
+        [MemberData(nameof(GetDataForDEqCmpComparisonsNaN))]
+        public void DComparisonsNaNEquals(double a, double b, int cmp) => Assert.Equal(cmp == 0, a.Equals(b));
+
+        public static IEnumerable<object[]> GetDataForDEqCmpComparisonsNaN()
+        {
+            double[] samples = { double.NaN, double.NegativeInfinity, -1d, 0d, 1d, double.PositiveInfinity, };
+            for (int i = 0; i < samples.Length; i += 1)
+            {
+                for (int j = 0; j < samples.Length; j += 1)
+                {
+                    yield return new object[] { samples[i], samples[j], i.CompareTo(j), };
+                }
+            }
+        }
+
+
+        [Theory]
+        [MemberData(nameof(GetDataForOpComparisonsNaN))]
+        public void OpComparisonsNaNLess(Rational a, Rational b) => Assert.False(a < b);
+
+        [Theory]
+        [MemberData(nameof(GetDataForOpComparisonsNaN))]
+        public void OpComparisonsNaNLessOrEquals(Rational a, Rational b) => Assert.False(a <= b);
+
+        [Theory]
+        [MemberData(nameof(GetDataForOpComparisonsNaN))]
+        public void OpComparisonsNaNGreater(Rational a, Rational b) => Assert.False(a > b);
+
+        [Theory]
+        [MemberData(nameof(GetDataForOpComparisonsNaN))]
+        public void OpComparisonsNaNGreaterOrEquals(Rational a, Rational b) => Assert.False(a >= b);
+
+        [Theory]
+        [MemberData(nameof(GetDataForOpComparisonsNaN))]
+        public void OpComparisonsNaNOpEquals(Rational a, Rational b) => Assert.False(a == b);
+
+        [Theory]
+        [MemberData(nameof(GetDataForOpComparisonsNaN))]
+        public void OpComparisonsNaNNotEquals(Rational a, Rational b) => Assert.True(a != b);
+
+        public static IEnumerable<object[]> GetDataForOpComparisonsNaN()
+        {
+            Rational[] samples = { new Rational(1, -1), new Rational(-1), new Rational(0), new Rational(1), new Rational(-1, -1), };
+            foreach (Rational d in samples)
+            {
+                yield return new object[] { Rational.NaN, d, };
+                yield return new object[] { d, Rational.NaN, };
+            }
+            yield return new object[] { Rational.NaN, Rational.NaN, };
+        }
+
+        [Theory]
+        [MemberData(nameof(GetDataForEqCmpComparisonsNaN))]
+        public void ComparisonsNaNCompareTo(Rational a, Rational b, int cmp) => Assert.Equal(cmp, a.CompareTo(b));
+
+        [Theory]
+        [MemberData(nameof(GetDataForEqCmpComparisonsNaN))]
+        public void ComparisonsNaNEqual(Rational a, Rational b, int cmp) => Assert.Equal(cmp == 0, a.Equals(b));
+
+        public static IEnumerable<object[]> GetDataForEqCmpComparisonsNaN()
+        {
+            Rational[] samples = { Rational.NaN, new Rational(-1), new Rational(0), new Rational(1), };
+            for (int i = 0; i < samples.Length; i += 1)
+            {
+                for (int j = 0; j < samples.Length; j += 1)
+                {
+                    yield return new object[] { samples[i], samples[j], i.CompareTo(j), };
+                }
+            }
+        }
+
         [Fact]
         public void Equality1()
         {
